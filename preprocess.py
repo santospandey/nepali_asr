@@ -50,7 +50,7 @@ def extract_speakerid(fileid):
 df["speakerid"] = df["id"].apply(extract_speakerid)
 
 # Reorder and format columns
-df = df[["id", "speakerid", "text"]]
+df = df[["file", "speaker", "text"]]
 
 # Save the DataFrame to a new CSV file
 df.to_csv("datasets/transcripts/speaker.csv", index=False, header=True)
