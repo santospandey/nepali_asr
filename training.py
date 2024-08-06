@@ -171,8 +171,8 @@ if __name__ == "__main__":
     # Load the data
     print("Loading data.....")
     train_wavs, train_texts = load_data(
-        wavs_dir="dataset/small_dataset/wav_files",
-        texts_dir="dataset/small_dataset/transcriptions/speaker.csv",
+        wavs_dir="datasets/wavs",
+        texts_dir="datasets/transcripts/speaker.csv",
     )
     print("Data loaded \u2705 \u2705 \u2705 \u2705\n")
 
