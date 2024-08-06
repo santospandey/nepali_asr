@@ -9,12 +9,12 @@ import requests
 dataset_url = "https://www.openslr.org/resources/43/ne_np_female.zip"
 dataset_zip = "ne_np_female.zip"
 
-# Download the dataset
-print("Downloading dataset...")
-response = requests.get(dataset_url, stream=True)
-with open(dataset_zip, "wb") as f:
-    shutil.copyfileobj(response.raw, f)
-print("Download completed.")
+# # Download the dataset
+# print("Downloading dataset...")
+# response = requests.get(dataset_url, stream=True)
+# with open(dataset_zip, "wb") as f:
+#     shutil.copyfileobj(response.raw, f)
+# print("Download completed.")
 
 # Unzip the dataset
 print("Unzipping dataset...")
@@ -37,7 +37,7 @@ for root, dirs, files in os.walk("dataset"):
 
 # Load the CSV file into a DataFrame
 df = pd.read_csv(
-    "datasets/transcripts/line_index.tsv", sep="\t", header=None, names=["id", "text"]
+    "datasets/transcripts/line_index.tsv", sep="\t", header=None, names=["file", "text"]
 )
 
 
@@ -47,7 +47,7 @@ def extract_speakerid(fileid):
 
 
 # Apply the function to create a new column 'speakerid'
-df["speakerid"] = df["id"].apply(extract_speakerid)
+df["speaker"] = df["file"].apply(extract_speakerid)
 
 # Reorder and format columns
 df = df[["file", "speaker", "text"]]
