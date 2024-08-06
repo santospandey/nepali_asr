@@ -9,12 +9,12 @@ import requests
 dataset_url = "https://www.openslr.org/resources/43/ne_np_female.zip"
 dataset_zip = "ne_np_female.zip"
 
-# # Download the dataset
-# print("Downloading dataset...")
-# response = requests.get(dataset_url, stream=True)
-# with open(dataset_zip, "wb") as f:
-#     shutil.copyfileobj(response.raw, f)
-# print("Download completed.")
+# Download the dataset
+print("Downloading dataset...")
+response = requests.get(dataset_url, stream=True)
+with open(dataset_zip, "wb") as f:
+    shutil.copyfileobj(response.raw, f)
+print("Download completed.")
 
 # Unzip the dataset
 print("Unzipping dataset...")
