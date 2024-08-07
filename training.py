@@ -242,7 +242,7 @@ if __name__ == "__main__":
         train_texts,
         test_wavs,
         test_texts,
-        epochs=2,
+        epochs=50,
         batch_size=2,
     )
 
