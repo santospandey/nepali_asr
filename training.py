@@ -5,6 +5,7 @@ import librosa
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+import matplotlib.pyplot as plt
 import tensorflow.keras.backend as K
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
@@ -38,6 +39,10 @@ def train_model(
     epochs=100,
     batch_size=50,
 ):
+    # Lists to store the losses for visualization
+    train_losses = []
+    test_losses = []
+    test_CERs = []
 
     with tf.device(device_name):
 
@@ -127,11 +132,38 @@ def train_model(
             test_loss /= test_batch_count
             test_CER /= test_batch_count
 
+            train_losses.append(train_loss)
+            test_losses.append(test_loss)
+            test_CERs.append(test_CER)
+
             rec = "Epoch: {}, Train Loss: {:.2f}, Test Loss {:.2f}, Test CER {:.2f} % in {:.2f} secs.\n".format(
                 e + 1, train_loss, test_loss, test_CER * 100, time.time() - start_time
             )
 
             print(rec)
+
+    # Plot the losses and CER
+    plt.figure(figsize=(12, 6))
+
+    # Plot training and test loss
+    plt.subplot(1, 2, 1)
+    plt.plot(range(1, epochs + 1), train_losses, label="Train Loss")
+    plt.plot(range(1, epochs + 1), test_losses, label="Test Loss")
+    plt.xlabel("Epochs")
+    plt.ylabel("Loss")
+    plt.title("Training and Validation Loss")
+    plt.legend()
+
+    # Plot CER
+    plt.subplot(1, 2, 2)
+    plt.plot(range(1, epochs + 1), test_CERs, label="Test CER")
+    plt.xlabel("Epochs")
+    plt.ylabel("CER")
+    plt.title("Character Error Rate (CER)")
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
 
 
 def load_data(wavs_dir, texts_dir):
@@ -210,7 +242,7 @@ if __name__ == "__main__":
         train_texts,
         test_wavs,
         test_texts,
-        epochs=50,
+        epochs=2,
         batch_size=2,
     )
 
