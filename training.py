@@ -142,28 +142,28 @@ def train_model(
 
             print(rec)
 
-    # Plot the losses and CER
-    plt.figure(figsize=(12, 6))
+        # Plot the losses and CER
+        plt.figure(figsize=(12, 6))
 
-    # Plot training and test loss
-    plt.subplot(1, 2, 1)
-    plt.plot(range(1, epochs + 1), train_losses, label="Train Loss")
-    plt.plot(range(1, epochs + 1), test_losses, label="Test Loss")
-    plt.xlabel("Epochs")
-    plt.ylabel("Loss")
-    plt.title("Training and Validation Loss")
-    plt.legend()
+        # Plot training and test loss
+        plt.subplot(1, 2, 1)
+        plt.plot(range(1, epochs + 1), train_losses, label="Train Loss")
+        plt.plot(range(1, epochs + 1), test_losses, label="Test Loss")
+        plt.xlabel("Epochs")
+        plt.ylabel("Loss")
+        plt.title("Training and Validation Loss")
+        plt.legend()
 
-    # Plot CER
-    plt.subplot(1, 2, 2)
-    plt.plot(range(1, epochs + 1), test_CERs, label="Test CER")
-    plt.xlabel("Epochs")
-    plt.ylabel("CER")
-    plt.title("Character Error Rate (CER)")
-    plt.legend()
+        # Plot CER
+        plt.subplot(1, 2, 2)
+        plt.plot(range(1, epochs + 1), test_CERs, label="Test CER")
+        plt.xlabel("Epochs")
+        plt.ylabel("CER")
+        plt.title("Character Error Rate (CER)")
+        plt.legend()
 
-    plt.tight_layout()
-    plt.show()
+        plt.tight_layout()
+        plt.show()
 
 
 def load_data(wavs_dir, texts_dir):
