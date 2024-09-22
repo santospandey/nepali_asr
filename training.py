@@ -125,11 +125,17 @@ def plot_metrics(train_losses, test_losses, test_CERs, epochs):
 
 
 def load_data(wavs_dir, texts_dir):
-    texts_df = pd.read_csv(texts_dir)
+    texts_df = pd.read_csv(texts_dir, sep="\t", header=None, names=["file", "speaker", "text"])
     train_wavs = []
     for f_name in texts_df["file"]:
-        wav, _ = librosa.load(f"{wavs_dir}/{f_name}.wav", sr=SR)
-        train_wavs.append(wav)
+        try:
+            wav, _ = librosa.load(f"{wavs_dir}/{f_name}.flac", sr=SR)
+            train_wavs.append(wav)
+            # print(f"{wavs_dir}/{f_name} found")
+        except FileNotFoundError:
+            pass
+            # print(f"Warning: Audio file '{wavs_dir}/{f_name}' not found.")
+
     train_texts = texts_df["text"].tolist()
     return train_wavs, train_texts
 
@@ -156,7 +162,7 @@ if __name__ == "__main__":
     optimizer = tf.keras.optimizers.Adam()
 
     print("Loading data.....")
-    train_wavs, train_texts = load_data("datasets/wavs", "datasets/transcripts/speaker.csv")
+    train_wavs, train_texts = load_data("download/wavs", "download/transcripts/utt_spk_text.tsv")
     print("Data loaded \u2705 \u2705 \u2705 \u2705\n")
 
     print("Cleaning the audio files.....")

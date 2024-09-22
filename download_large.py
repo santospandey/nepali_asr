@@ -1,10 +1,17 @@
 import os
 import requests
 import zipfile
+import shutil
 from tqdm import tqdm
 
 # Create directories for downloading files
-os.makedirs('download/wav', exist_ok=True)
+download_dir = 'download'
+transcript_dir = f"{download_dir}/transcripts"
+temp_dir = f"{download_dir}/temp"
+audio_dir = f"{download_dir}/wavs"
+
+os.makedirs('download/wavs', exist_ok=True)
+os.makedirs(transcript_dir, exist_ok=True)
 
 # List of zip files to download
 zip_files = [
@@ -26,12 +33,13 @@ zip_files = [
     "asr_nepali_f.zip"
 ]
 
+
 # Base URL for the downloads
 base_url = "https://openslr.org/resources/54/"
 
 # Function to download and extract .zip files
 def download_and_extract(zip_file):
-    zip_path = os.path.join('download', zip_file)
+    zip_path = os.path.join(download_dir, zip_file)
     
     # Download the zip file
     print(f"Downloading {zip_file}...")
@@ -45,10 +53,24 @@ def download_and_extract(zip_file):
 
     # Extract .flac files from the zip file
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-        zip_ref.extractall('download/wav')
+        zip_ref.extractall(temp_dir)
+
+    # Walk through the source directory and find all .flac files
+    for root, _, files in os.walk(temp_dir):
+        for file in files:
+            if file.endswith('.flac'):
+                flac_file = os.path.join(root, file)
+                # Copy the .flac file to the destination directory
+                shutil.copy(flac_file, audio_dir)
+                print(f"Copied {flac_file} to {audio_dir}")
+
+    print("All .flac files copied successfully!")
+
+    shutil.copy(f"{temp_dir}/asr_nepali/utt_spk_text.tsv", transcript_dir)
     
     # Optionally remove the zip file after extraction
     os.remove(zip_path)
+    shutil.rmtree(temp_dir)
 
 # Download all zip files and extract .flac files
 for zip_file in zip_files:
