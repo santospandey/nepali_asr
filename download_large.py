@@ -40,7 +40,17 @@ zip_files = [
     "asr_nepali_2.zip",
     "asr_nepali_3.zip",
     "asr_nepali_4.zip",
-    "asr_nepali_5.zip"
+    "asr_nepali_5.zip",
+    "asr_nepali_6.zip",
+    "asr_nepali_7.zip",
+    "asr_nepali_8.zip",
+    "asr_nepali_9.zip",
+    "asr_nepali_a.zip",
+    "asr_nepali_b.zip",
+    "asr_nepali_c.zip",
+    "asr_nepali_d.zip",
+    "asr_nepali_e.zip",
+    "asr_nepali_f.zip"
 ]
 
 

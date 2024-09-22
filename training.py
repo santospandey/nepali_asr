@@ -134,20 +134,25 @@ def plot_metrics(train_losses, test_losses, test_CERs, epochs):
     plt.show()
 
 
-def load_data(wavs_dir, texts_dir):
+def load_data(wavs_dir, texts_dir, reduction_factor=5):
     texts_df = pd.read_csv(texts_dir, sep="\t", header=None, names=["file", "speaker", "text"])
     train_wavs = []
+
     for f_name in texts_df["file"]:
         try:
             wav, _ = librosa.load(f"{wavs_dir}/{f_name}.flac", sr=SR)
             train_wavs.append(wav)
-            # print(f"{wavs_dir}/{f_name} found")
         except FileNotFoundError:
             pass
-            # print(f"Warning: Audio file '{wavs_dir}/{f_name}' not found.")
 
     train_texts = texts_df["text"].tolist()
-    return train_wavs, train_texts
+
+    # Randomly select 1/5th of the data
+    indices = np.random.choice(len(train_wavs), size=len(train_wavs) // reduction_factor, replace=False)
+    reduced_train_wavs = [train_wavs[i] for i in indices]
+    reduced_train_texts = [train_texts[i] for i in indices]
+
+    return reduced_train_wavs, reduced_train_texts
 
 
 if __name__ == "__main__":
@@ -172,7 +177,7 @@ if __name__ == "__main__":
     optimizer = tf.keras.optimizers.Adam()
 
     print("Loading data.....")
-    train_wavs, train_texts = load_data("download/wavs", "download/transcripts/utt_spk_text.tsv")
+    train_wavs, train_texts = load_data("download/wavs", "download/transcripts/utt_spk_text.tsv", 10)
     print("Data loaded \u2705 \u2705 \u2705 \u2705\n")
 
     print("Cleaning the audio files.....")
