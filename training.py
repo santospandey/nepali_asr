@@ -18,6 +18,7 @@ from model.configs import (
     UNQ_CHARS,
     device_name,
 )
+
 from model.model import get_model
 from model.utils import (
     CER_from_mfccs,

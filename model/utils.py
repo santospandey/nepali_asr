@@ -78,28 +78,20 @@ import edit_distance as ed
 
 
 # Global configs required for training
-from .configs import INPUT_DIM, SR, N_MFCC, HOP_LENGTH, FRAME_SIZE
-
-device_name = '/device:CPU:0'
+from .configs import INPUT_DIM, SR, N_MFCC, HOP_LENGTH, FRAME_SIZE, device_name
 
 # U.0
 # Loads model from the directory argument
-
-
 def load_model(model_dir):
     return models.load_model(model_dir)
 
 # U.1
 # Loading wav file from librosa
-
-
 def load_wav(dir):
     return librosa.load(dir, sr=SR)[0]
 
 # U.2
 # Generates Normalized MFCCs from audio
-
-
 def gen_mfcc(arr):
     mfccs = librosa.feature.mfcc(
         y=arr[:-1], sr=SR, n_mfcc=N_MFCC, hop_length=HOP_LENGTH).transpose().flatten()
