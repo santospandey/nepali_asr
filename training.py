@@ -1,6 +1,6 @@
 import time
 
-import edit_distance as ed
+import editdistance as ed  # or edit_distance if using that library
 import librosa
 import numpy as np
 import pandas as pd
@@ -122,8 +122,7 @@ def train_model(
                 for i in range(len_batch):
                     pred = predicted_indices[i]
                     truth = target_indices[i]
-                    sm = ed.SequenceMatcher(pred, truth)
-                    ed_dist = sm.distance()  # Edit distance
+                    ed_dist = ed.eval(pred, truth)
                     test_CER += ed_dist / len(truth)
                 test_CER /= len_batch
 
@@ -192,7 +191,7 @@ if __name__ == "__main__":
     optimizer = tf.keras.optimizers.Adam()
 
     print("Loading data.....")
-    train_wavs, train_texts = load_data("download/wavs", "download/transcripts/utt_spk_text.tsv", 10)
+    train_wavs, train_texts = load_data("download/wavs", "download/transcripts/utt_spk_text.tsv", 200)
     print("Data loaded \u2705 \u2705 \u2705 \u2705\n")
 
     print("Cleaning the audio files.....")
