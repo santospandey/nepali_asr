@@ -30,6 +30,7 @@ from model.utils import (
 
 def train_model(model, optimizer, train_data, test_data, epochs=100, batch_size=50):
     train_losses, test_losses, test_CERs = [], [], []
+    current_CER = 999999999999999
 
     with tf.device(device_name):
         for e in range(epochs):
@@ -61,8 +62,16 @@ def train_model(model, optimizer, train_data, test_data, epochs=100, batch_size=
                 f"in {time.time() - start_time:.2f} secs."
             )
             print(rec)
+            if test_CER < current_CER:
+                # Save the trained model with a timestamp
+                timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+                model_save_path = f"model/asr_model_{test_CER}_{timestamp}.h5"
+                model.save(model_save_path)
+                current_CER = test_CER
 
-        plot_metrics(train_losses, test_losses, test_CERs, epochs)
+    print(f"Model saved to {model_save_path} \u2705")
+
+    plot_metrics(train_losses, test_losses, test_CERs, epochs)
 
 
 def run_epoch(model, optimizer, data, batch_size, training=True):
