@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import tensorflow.keras.backend as K
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
+import datetime
 
 from model.configs import (
     INPUT_DIM,
@@ -26,7 +27,6 @@ from model.utils import (
     indices_from_texts,
     load_model,
 )
-
 
 def train_model(model, optimizer, train_data, test_data, epochs=100, batch_size=50):
     train_losses, test_losses, test_CERs = [], [], []
@@ -168,9 +168,14 @@ if __name__ == "__main__":
     print("MFCC features generated \u2705 \u2705 \u2705 \u2705\n")
 
     train_wavs, test_wavs, train_texts, test_texts = train_test_split(
-        train_wavs, train_texts, test_size=0.2
+        train_wavs, train_texts, test_size=0.1
     )
 
-    train_model(model, optimizer, (train_wavs, train_texts), (test_wavs, test_texts), epochs=50, batch_size=2)
+    train_model(model, optimizer, (train_wavs, train_texts), (test_wavs, test_texts), epochs=60, batch_size=50)
 
-    model.save("model/asr_model.h5")
+    # Save the trained model with a timestamp
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    model_save_path = f"model/asr_model_{timestamp}.h5"
+    model.save(model_save_path)
+
+    print(f"Model saved to {model_save_path} \u2705")

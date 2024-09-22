@@ -3,3 +3,4 @@ model/*.h5_old
 __pycache__
 *.DS_Store
 .trunk/
+model/
