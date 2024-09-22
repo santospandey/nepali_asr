@@ -13,6 +13,26 @@ audio_dir = f"{download_dir}/wavs"
 os.makedirs('download/wavs', exist_ok=True)
 os.makedirs(transcript_dir, exist_ok=True)
 
+# # List of zip files to download
+# zip_files = [
+#     "asr_nepali_0.zip",
+#     "asr_nepali_1.zip",
+#     "asr_nepali_2.zip",
+#     "asr_nepali_3.zip",
+#     "asr_nepali_4.zip",
+#     "asr_nepali_5.zip",
+#     "asr_nepali_6.zip",
+#     "asr_nepali_7.zip",
+#     "asr_nepali_8.zip",
+#     "asr_nepali_9.zip",
+#     "asr_nepali_a.zip",
+#     "asr_nepali_b.zip",
+#     "asr_nepali_c.zip",
+#     "asr_nepali_d.zip",
+#     "asr_nepali_e.zip",
+#     "asr_nepali_f.zip"
+# ]
+
 # List of zip files to download
 zip_files = [
     "asr_nepali_0.zip",
@@ -20,18 +40,9 @@ zip_files = [
     "asr_nepali_2.zip",
     "asr_nepali_3.zip",
     "asr_nepali_4.zip",
-    "asr_nepali_5.zip",
-    "asr_nepali_6.zip",
-    "asr_nepali_7.zip",
-    "asr_nepali_8.zip",
-    "asr_nepali_9.zip",
-    "asr_nepali_a.zip",
-    "asr_nepali_b.zip",
-    "asr_nepali_c.zip",
-    "asr_nepali_d.zip",
-    "asr_nepali_e.zip",
-    "asr_nepali_f.zip"
+    "asr_nepali_5.zip"
 ]
+
 
 
 # Base URL for the downloads
@@ -62,6 +73,7 @@ def download_and_extract(zip_file):
                 flac_file = os.path.join(root, file)
                 # Copy the .flac file to the destination directory
                 shutil.copy(flac_file, audio_dir)
+                # print(f"Copied {flac_file} to {audio_dir}")
 
     print("All .flac files copied successfully!")
 

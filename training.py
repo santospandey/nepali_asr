@@ -187,7 +187,7 @@ if __name__ == "__main__":
         train_wavs, train_texts, test_size=0.1
     )
 
-    train_model(model, optimizer, (train_wavs, train_texts), (test_wavs, test_texts), epochs=60, batch_size=50)
+    train_model(model, optimizer, (train_wavs, train_texts), (test_wavs, test_texts), epochs=60, batch_size=100)
 
     # Save the trained model with a timestamp
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
