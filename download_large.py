@@ -62,7 +62,6 @@ def download_and_extract(zip_file):
                 flac_file = os.path.join(root, file)
                 # Copy the .flac file to the destination directory
                 shutil.copy(flac_file, audio_dir)
-                print(f"Copied {flac_file} to {audio_dir}")
 
     print("All .flac files copied successfully!")
 
