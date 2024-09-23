@@ -44,7 +44,6 @@ def train_model(
     train_losses = []
     test_losses = []
     test_CERs = []
-    current_CER = 999999999999
 
     with tf.device(device_name):
         for e in range(0, epochs):
@@ -142,7 +141,7 @@ def train_model(
 
             # Save the trained model with a timestamp
             timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-            model_save_path = f"model/asr_model_{test_CER}_{timestamp}.h5"
+            model_save_path = f"/kaggle/working/model/asr_model_{test_CER}_{timestamp}.h5"
             model.save(model_save_path)
 
 
@@ -189,7 +188,7 @@ if __name__ == "__main__":
     optimizer = tf.keras.optimizers.Adam()
 
     print("Loading data.....")
-    train_wavs, train_texts = load_data("download/wavs", "download/transcripts/utt_spk_text.tsv", 20)
+    train_wavs, train_texts = load_data("download/wavs", "download/transcripts/utt_spk_text.tsv", 15000)
     print("Data loaded \u2705 \u2705 \u2705 \u2705\n")
 
     print("Cleaning the audio files.....")
@@ -204,4 +203,4 @@ if __name__ == "__main__":
         train_wavs, train_texts, test_size=0.1
     )
 
-    train_model(model, optimizer, train_wavs, train_texts, test_wavs, test_texts, epochs=60, batch_size=50)
+    train_model(model, optimizer, train_wavs, train_texts, test_wavs, test_texts, epochs=60, batch_size=5)
