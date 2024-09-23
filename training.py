@@ -191,7 +191,7 @@ if __name__ == "__main__":
     optimizer = tf.keras.optimizers.Adam()
 
     print("Loading data.....")
-    train_wavs, train_texts = load_data("download/wavs", "download/transcripts/utt_spk_text.tsv", 10)
+    train_wavs, train_texts = load_data("download/wavs", "download/transcripts/utt_spk_text.tsv", 500)
     print("Data loaded \u2705 \u2705 \u2705 \u2705\n")
 
     print("Cleaning the audio files.....")
