@@ -17,7 +17,7 @@ from model.configs import (
     NUM_UNQ_CHARS,
     SR,
     UNQ_CHARS,
-    device_name,
+    strategy,
 )
 from model.model import get_model
 from model.utils import (
@@ -45,7 +45,7 @@ def train_model(
     test_losses = []
     test_CERs = []
 
-    with tf.device(device_name):
+    with strategy.scope():
         for e in range(0, epochs):
             start_time = time.time()
             len_train = len(train_wavs)
@@ -141,7 +141,7 @@ def train_model(
 
             # Save the trained model with a timestamp
             timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-            model_save_path = f"/kaggle/working/model/asr_model_{test_CER}_{timestamp}.h5"
+            model_save_path = f"/kaggle/working/model/asr_model_{e}_{timestamp}.h5"
             model.save(model_save_path)
 
 
@@ -203,4 +203,4 @@ if __name__ == "__main__":
         train_wavs, train_texts, test_size=0.1
     )
 
-    train_model(model, optimizer, train_wavs, train_texts, test_wavs, test_texts, epochs=60, batch_size=5)
+    train_model(model, optimizer, train_wavs, train_texts, test_wavs, test_texts, epochs=10, batch_size=5)
