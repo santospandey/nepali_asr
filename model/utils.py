@@ -78,7 +78,9 @@ import edit_distance as ed
 
 
 # Global configs required for training
-from .configs import INPUT_DIM, SR, N_MFCC, HOP_LENGTH, FRAME_SIZE, device_name
+from .configs import INPUT_DIM, SR, N_MFCC, HOP_LENGTH, FRAME_SIZE
+
+device_name = '/device:CPU:0'
 
 # U.0
 # Loads model from the directory argument
