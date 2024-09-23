@@ -140,12 +140,10 @@ def train_model(
 
             print(rec)
 
-            if test_CER < current_CER:
-                # Save the trained model with a timestamp
-                timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-                model_save_path = f"model/asr_model_{test_CER}_{timestamp}.h5"
-                model.save(model_save_path)
-                current_CER = test_CER
+            # Save the trained model with a timestamp
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            model_save_path = f"model/asr_model_{test_CER}_{timestamp}.h5"
+            model.save(model_save_path)
 
 
 def load_data(wavs_dir, texts_dir, reduction_factor=5):
@@ -191,7 +189,7 @@ if __name__ == "__main__":
     optimizer = tf.keras.optimizers.Adam()
 
     print("Loading data.....")
-    train_wavs, train_texts = load_data("download/wavs", "download/transcripts/utt_spk_text.tsv", 5000)
+    train_wavs, train_texts = load_data("download/wavs", "download/transcripts/utt_spk_text.tsv", 10)
     print("Data loaded \u2705 \u2705 \u2705 \u2705\n")
 
     print("Cleaning the audio files.....")
