@@ -20,12 +20,16 @@ NUM_UNQ_CHARS = len(UNQ_CHARS) # +1 is for '-' blank at last
 
 MODEL_NAME = "ASR_model"
 
+# Detect TPU, return appropriate distribution strategy
 try:
-    tpu = tf.distribute.cluster_resolver.TPUClusterResolver()
+    tpu = tf.distribute.cluster_resolver.TPUClusterResolver() 
+    print('Running on TPU ', tpu.master())
+except ValueError:
+    tpu = None
+
+if tpu:
     tf.config.experimental_connect_to_cluster(tpu)
     tf.tpu.experimental.initialize_tpu_system(tpu)
-    strategy = tf.distribute.experimental.TPUStrategy(tpu)
-    device_name = '/device:TPU:0'
-except ValueError:
-    # Fall back to GPU or CPU if TPU is not available
-    device_name = '/device:GPU:0' if tf.config.list_physical_devices('GPU') else '/device:CPU:0'
+    strategy = tf.distribute.TPUStrategy(tpu)
+else:
+    strategy = tf.distribute.get_strategy()
