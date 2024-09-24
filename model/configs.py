@@ -19,24 +19,3 @@ UNQ_CHARS = ['0', 'u' ] + sorted(UNQ_CHARS) + ['-'] #"0" -> padding char,"u" -> 
 NUM_UNQ_CHARS = len(UNQ_CHARS) # +1 is for '-' blank at last
 
 MODEL_NAME = "ASR_model"
-
-# Detect TPU, return appropriate distribution strategy
-try:
-    tpu = tf.distribute.cluster_resolver.TPUClusterResolver() 
-    print('Running on TPU ', tpu.master())
-except ValueError:
-    tpu = None
-
-if tpu:
-    tf.config.experimental_connect_to_cluster(tpu)
-    tf.tpu.experimental.initialize_tpu_system(tpu)
-    strategy = tf.distribute.TPUStrategy(tpu)
-    print(f"Using TPU: {tpu}")
-else:
-    gpus = tf.config.list_physical_devices('GPU')
-    if gpus:
-        strategy = tf.distribute.MirroredStrategy()  # Use GPU
-        print(f"Using GPU: {gpus}")
-    else:
-        strategy = tf.distribute.get_strategy()  # Default to CPU
-        print("Using CPU")

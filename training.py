@@ -17,7 +17,6 @@ from model.configs import (
     NUM_UNQ_CHARS,
     SR,
     UNQ_CHARS,
-    strategy,
 )
 from model.model import get_model
 from model.utils import (
@@ -29,7 +28,6 @@ from model.utils import (
     load_model,
 )
 
-
 def train_model(
     model,
     optimizer,
@@ -37,6 +35,7 @@ def train_model(
     train_texts,
     test_wavs,
     test_texts,
+    strategy,
     epochs=100,
     batch_size=50,
 ):
@@ -106,7 +105,7 @@ def train_model(
                 """
                 input_len = np.ones(output.shape[0]) * output.shape[1]
                 decoded_indices = K.ctc_decode(
-                    output, input_length=input_len, greedy=False, beam_width=100
+                    output, input_length=input_len, greedy=False, beam_width=50
                 )[0][0]
 
                 # Remove the padding token from batchified target texts
@@ -167,6 +166,28 @@ def load_data(wavs_dir, texts_dir, reduction_factor=5):
 
 
 if __name__ == "__main__":
+
+    # Detect TPU, return appropriate distribution strategy
+    try:
+        tpu = tf.distribute.cluster_resolver.TPUClusterResolver()
+        print('Running on TPU ', tpu.master())
+    except ValueError:
+        tpu = None
+
+    if tpu:
+        tf.config.experimental_connect_to_cluster(tpu)
+        tf.tpu.experimental.initialize_tpu_system(tpu)
+        strategy = tf.distribute.TPUStrategy(tpu)
+        print(f"Using TPU: {tpu}")
+    else:
+        gpus = tf.config.list_physical_devices('GPU')
+        if gpus:
+            strategy = tf.distribute.MirroredStrategy()  # Use GPU
+            print(f"Using GPU: {gpus}")
+        else:
+            strategy = tf.distribute.get_strategy()  # Default to CPU
+            print("Using CPU")
+
     model = get_model(
         INPUT_DIM,
         NUM_UNQ_CHARS,
@@ -185,7 +206,7 @@ if __name__ == "__main__":
     )
     print("Model defined \u2705 \u2705 \u2705 \u2705\n")
 
-    optimizer = tf.keras.optimizers.Adam()
+    optimizer = tf.keras.optimizers.Adam(learning_rate=0.005)
 
     print("Loading data.....")
     train_wavs, train_texts = load_data("download/wavs", "download/transcripts/utt_spk_text.tsv", reduction_factor=25)
@@ -203,4 +224,4 @@ if __name__ == "__main__":
         train_wavs, train_texts, test_size=0.1
     )
 
-    train_model(model, optimizer, train_wavs, train_texts, test_wavs, test_texts, epochs=30, batch_size=50)
+    train_model(model, optimizer, train_wavs, train_texts, test_wavs, test_texts, strategy=strategy, epochs=25, batch_size=60)
