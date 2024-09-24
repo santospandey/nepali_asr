@@ -203,4 +203,4 @@ if __name__ == "__main__":
         train_wavs, train_texts, test_size=0.1
     )
 
-    train_model(model, optimizer, train_wavs, train_texts, test_wavs, test_texts, epochs=35, batch_size=100)
+    train_model(model, optimizer, train_wavs, train_texts, test_wavs, test_texts, epochs=35, batch_size=50)
