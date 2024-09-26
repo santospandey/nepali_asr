@@ -141,8 +141,6 @@ def pad_list_np(list_np):
 
 # U.5
 # Generates batches of wavs and texts  with padding as per needed
-
-
 def batchify(wavs, texts, unq_chars):
     assert len(wavs) == len(texts)
     # generates tensor of dim (batch * seq * frame)
@@ -293,6 +291,7 @@ def CER_from_mfccs(model, mfccs, texts, unq_chars, batch_size=100):
 
 # U.11
 # CER from wavs
+
 
 
 def CER_from_wavs(model, wavs, texts, unq_chars, batch_size=100):
